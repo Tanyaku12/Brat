@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brat Generator (Custom)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Brat Generator 💅</h1>
+        
+        <div class="input-section">
+            <label for="inputText">Masukkan Pesan Anda:</label>
+            <input type="text" id="inputText" placeholder="ketik pesan di sini">
+
+            <div class="color-options">
+                <div class="color-input-group">
+                    <label for="fontColor">Warna Font (Default: Hitam):</label>
+                    <input type="color" id="fontColor" value="#000000"> 
+                </div>
+
+                <div class="color-input-group">
+                    <label for="bgColor">Warna Background (Default: Putih):</label>
+                    <input type="color" id="bgColor" value="#ffffff"> 
+                </div>
+            </div>
+
+            <button id="generateBtn">Generate Brat</button>
+            <button id="downloadBtn" disabled>Download PNG</button>
+        </div>
+
+        <div class="output-section">
+            <canvas id="bratCanvas" width="500" height="500"></canvas>
+        </div>
+        
+        <p class="note">Gaya brat: font tebal, semua huruf kecil. Gunakan #81ff00 untuk background hijau neon khas.</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

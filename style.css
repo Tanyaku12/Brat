@@ -1,0 +1,102 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 90%;
+    max-width: 600px;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.input-section label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+#inputText {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Pengaturan Pilihan Warna */
+.color-options {
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.color-input-group {
+    text-align: left;
+}
+
+.color-input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: normal;
+    font-size: 0.9em;
+}
+
+.color-input-group input[type="color"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    width: 50px;
+    height: 30px;
+    cursor: pointer;
+    padding: 0;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+}
+
+
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#generateBtn {
+    background-color: #3f51b5; 
+    color: white;
+}
+
+#downloadBtn {
+    background-color: #4CAF50; 
+    color: white;
+}
+
+#bratCanvas {
+    margin-top: 20px;
+    border: 1px solid #ddd;
+}
+
+.note {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #666;
+}
