@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const inputText = document.getElementById('inputText');
-    const fontColorInput = document.getElementById('fontColor');
-    const bgColorInput = document.getElementById('bgColor');
     const generateBtn = document.getElementById('generateBtn');
     const downloadBtn = document.getElementById('downloadBtn');
     const canvas = document.getElementById('bratCanvas');
@@ -13,26 +11,27 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const fontStyle = 'bold 80px Arial, sans-serif'; 
 
-    // Nilai Default: FONT HITAM, BACKGROUND PUTIH
-    const DEFAULT_BG = '#ffffff'; 
-    const DEFAULT_FONT = '#000000'; 
-
-    
-    fontColorInput.value = DEFAULT_FONT;
-    bgColorInput.value = DEFAULT_BG;
+    const FIXED_BG = '#ffffff'; 
+    const FIXED_FONT = '#000000'; 
 
 
-    function drawBratText(text, selectedFontColor, selectedBgColor) {
-    
+    function getTextFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const textFromUrl = urlParams.get('text');
+        return textFromUrl ? decodeURIComponent(textFromUrl) : null;
+    }
+
+
+    function drawBratText(text) {
         ctx.clearRect(0, 0, size, size);
-        
-        ctx.fillStyle = selectedBgColor;
+        ctx.fillStyle = FIXED_BG;
         ctx.fillRect(0, 0, size, size);
-        
-        ctx.fillStyle = selectedFontColor;
+        ctx.fillStyle = FIXED_FONT;
         ctx.font = fontStyle;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
+        
+        const processedText = text; 
         
         
         const maxTextWidth = size * 0.9;
@@ -52,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         lines.push(currentLine);
+
         const lineHeight = 70; 
         let startY = size / 2 - (lines.length - 1) * lineHeight / 2;
 
@@ -60,34 +60,42 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillText(line, size / 2, y);
         });
 
-        downloadBtn.disabled = false;
+        downloadBtn.style.display = 'block';
     }
+
+
+    
+    const textFromUrl = getTextFromUrl();
+    const initialText = textFromUrl || "DEFAULT TEXT"; 
+    inputText.value = initialText;
+    drawBratText(initialText); 
+
+
 
 
     generateBtn.addEventListener('click', () => {
         const text = inputText.value.trim();
         
-        const selectedFontColor = fontColorInput.value;
-        const selectedBgColor = bgColorInput.value;
-
         if (text) {
-            drawBratText(text, selectedFontColor, selectedBgColor);
+            drawBratText(text);
         } else {
             alert("Silakan masukkan pesan!");
         }
     });
 
-
     downloadBtn.addEventListener('click', () => {
         const imageURL = canvas.toDataURL('image/png'); 
         const link = document.createElement('a');
         link.href = imageURL;
-        link.download = 'brat-by-Pareh.png'; 
+    
+        link.download = `brat-by-pareh.png`; 
+        
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     });
-
-
-    drawBratText("default theme", DEFAULT_FONT, DEFAULT_BG); 
+    if (!textFromUrl) {
+         downloadBtn.style.display = 'none';
+    }
 });
+            
