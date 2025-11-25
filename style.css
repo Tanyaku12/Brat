@@ -1,75 +1,60 @@
+
+:root {
+    --bg-color: #121212; 
+    --accent-color: #00ffff; 
+    --container-bg: #1e1e1e; 
+    --text-color: #e0e0e0; 
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    font-family: 'Arial', sans-serif;
+    background-color: var(--bg-color);
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: center; 
+    align-items: flex-start;
     min-height: 100vh;
     margin: 0;
+    color: var(--text-color);
+    flex-direction: column;
 }
 
 .container {
-    background-color: #ffffff;
+    background-color: var(--container-bg);
     padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5), 
+                0 0 5px rgba(0, 0, 0, 0.5); 
     text-align: center;
     width: 90%;
     max-width: 600px;
+    border: 1px solid var(--accent-color); 
+    margin: 50px auto 20px auto;
 }
 
 h1 {
-    color: #333;
-    margin-bottom: 20px;
+    color: var(--accent-color);
+    text-shadow: 0 0 8px var(--accent-color); 
+    margin-bottom: 25px;
 }
 
 .input-section label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+    color: var(--accent-color);
 }
 
 #inputText {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     margin-bottom: 15px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
+    background-color: #2a2a2a; 
+    color: var(--text-color);
+    border: 1px solid var(--accent-color);
+    border-radius: 8px;
     box-sizing: border-box;
+    box-shadow: inset 0 0 5px rgba(0, 255, 255, 0.3); 
 }
-
-/* Pengaturan Pilihan Warna */
-.color-options {
-    display: flex;
-    justify-content: space-around;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.color-input-group {
-    text-align: left;
-}
-
-.color-input-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: normal;
-    font-size: 0.9em;
-}
-
-.color-input-group input[type="color"] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border: none;
-    width: 50px;
-    height: 30px;
-    cursor: pointer;
-    padding: 0;
-    border-radius: 5px;
-    border: 2px solid #ccc;
-}
-
 
 button {
     padding: 10px 20px;
@@ -78,25 +63,52 @@ button {
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
+    transition: transform 0.1s ease, box-shadow 0.1s ease; 
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.4); 
+}
+
+button:hover {
+    transform: scale(1.05); 
+    box-shadow: 0 0 10px var(--accent-color), 0 5px 0 rgba(0, 0, 0, 0.4); 
+}
+
+button:active {
+    transform: scale(1.0); 
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.2); 
+    transform: translateY(3px); 
 }
 
 #generateBtn {
     background-color: #3f51b5; 
     color: white;
+    margin-top: 15px; 
 }
 
 #downloadBtn {
     background-color: #4CAF50; 
     color: white;
+    margin-top: 15px; 
 }
+
 
 #bratCanvas {
     margin-top: 20px;
-    border: 1px solid #ddd;
+    border: 2px solid var(--accent-color); 
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
 }
 
 .note {
     margin-top: 20px;
     font-size: 0.9em;
-    color: #666;
+    color: var(--text-color);
 }
+
+#copyright {
+    color: #666;
+    font-size: 0.8em;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    width: 100%;
+}
+                             
