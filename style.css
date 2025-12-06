@@ -114,14 +114,14 @@ button:active {
                              
 /* Default untuk desktop */
 .container {
-  width: 100%;
+  width: calc(100% - 40px);
   padding: 20px;
 }
 
 /* Untuk tablet dan ponsel (lebar maksimal 768px) */
 @media (max-width: 768px) {
   .container {
-    width: 90%-(10px+10px);
+    width: calc(90% - 20px);
     padding: 10px;
   }
   .sidebar {
