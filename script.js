@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     
     const textFromUrl = getTextFromUrl();
-    const initialText = textFromUrl || "DEFAULT TEXT"; 
+    const initialText = textFromUrl || "Brat By Pareh"; 
     inputText.value = initialText;
     drawBratText(initialText); 
 
