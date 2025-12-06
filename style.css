@@ -94,7 +94,7 @@ button:active {
 #bratCanvas {
     margin-top: 20px;
     border: 2px solid var(--accent-color); 
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+    box-shadow: 0 0 10px rgba(0, 225, 225, 0.8);
 }
 
 .note {
@@ -114,14 +114,14 @@ button:active {
                              
 /* Default untuk desktop */
 .container {
-  width: calc(100% - 40px);
+  width: 100%;
   padding: 20px;
 }
 
 /* Untuk tablet dan ponsel (lebar maksimal 768px) */
 @media (max-width: 768px) {
   .container {
-    width: calc(90% - 20px);
+    width: 90%;
     padding: 10px;
   }
   .sidebar {
