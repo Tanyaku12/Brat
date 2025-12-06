@@ -112,22 +112,29 @@ button:active {
     width: 100%;
 }
                              
-/* Default for large screens */
+/* Default untuk desktop */
 .container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+  width: 100%;
+  padding: 20px;
 }
 
-/* Tablet */
-@media (max-width: 1024px) {
-    .container {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-/* Phone */
+/* Untuk tablet dan ponsel (lebar maksimal 768px) */
 @media (max-width: 768px) {
-    .container {
-        grid-template-columns: 1fr;
-    }
+  .container {
+    width: 90%;
+    padding: 10px;
+  }
+  .sidebar {
+    display: none; /* Sembunyikan sidebar di layar kecil */
+  }
 }
+
+/* Untuk ponsel kecil (lebar maksimal 480px) */
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+  .container {
+    flex-direction: column; /* Ubah layout menjadi vertikal */
+  }
+    }
