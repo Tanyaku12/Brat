@@ -121,7 +121,7 @@ button:active {
 /* Untuk tablet dan ponsel (lebar maksimal 768px) */
 @media (max-width: 768px) {
   .container {
-    width: 90%;
+    width: 90%-(10px+10px);
     padding: 10px;
   }
   .sidebar {
