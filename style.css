@@ -255,7 +255,7 @@ hr.divider {
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: lowercase;
-    color: var(--gray-400);
+    color: #555555;
 }
 
 /* ── RIGHT PANEL ── */
