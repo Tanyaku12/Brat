@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     
     const textFromUrl = getTextFromUrl();
-    const initialText = textFromUrl || "Brat By Pareh"; 
+    const initialText = textFromUrl || "Brat By Blinx"; 
     inputText.value = initialText;
     drawBratText(initialText); 
 
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const link = document.createElement('a');
         link.href = imageURL;
     
-        link.download = `brat-by-pareh.png`; 
+        link.download = `brat-by-blinx.png`; 
         
         document.body.appendChild(link);
         link.click();
