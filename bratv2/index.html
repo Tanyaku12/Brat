@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brat Generator By Blinx</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+    <div class="container">
+        <h1>Brat Generator</h1>
+        
+        <div class="input-section">
+            <label for="inputText">Masukkan Pesan Anda:</label>
+            <input type="text" id="inputText" placeholder="Ketik pesan di sini">
+
+            <button id="generateBtn">Generate Brat</button>
+        </div>
+
+        <div class="output-section">
+            <canvas id="bratCanvas" width="80%" height="80%"></canvas>
+            <button id="downloadBtn" style="display: none;">Download PNG</button>
+        </div>
+        
+        <p class="note">Akses cepat: tambahkan <code>?text=pesan+anda</code> di URL.</p>
+    </div>
+    
+    <p id="copyright">© Copyright Blinx Since 2025</p>
+
+    <script src="script.js"></script>
+</body>
+</html>
