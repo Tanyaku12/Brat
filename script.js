@@ -1,14 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const inputText      = document.getElementById('inputText');
-    const generateBtn    = document.getElementById('generateBtn');
-    const downloadBtn    = document.getElementById('downloadBtn');
-    const copyLinkBtn    = document.getElementById('copyLinkBtn');
-    const canvas         = document.getElementById('bratCanvas');
-    const placeholder    = document.getElementById('canvasPlaceholder');
-    const blurToggle     = document.getElementById('blurToggle');
-    const bgColorInput   = document.getElementById('bgColor');
-    const toast          = document.getElementById('toast');
-    const ctx            = canvas.getContext('2d');
+    const inputText     = document.getElementById('inputText');
+    const generateBtn   = document.getElementById('generateBtn');
+    const downloadBtn   = document.getElementById('downloadBtn');
+    const copyLinkBtn   = document.getElementById('copyLinkBtn');
+    const canvas        = document.getElementById('bratCanvas');
+    const placeholder   = document.getElementById('canvasPlaceholder');
+    const blurToggle    = document.getElementById('blurToggle');
+    const bgColorInput  = document.getElementById('bgColor');
+    const toast         = document.getElementById('toast');
+    const ctx           = canvas.getContext('2d');
 
     const SIZE = 500;
     canvas.width  = SIZE;
@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
     colorBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             colorBtns.forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.custom-color-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             currentBg = btn.dataset.color;
             bgColorInput.value = currentBg;
@@ -34,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bgColorInput.addEventListener('input', (e) => {
         currentBg = e.target.value;
         colorBtns.forEach(b => b.classList.remove('active'));
-        document.getElementById('bgColor').closest('.color-btn').classList.add('active');
+        document.querySelector('.custom-color-btn').classList.add('active');
         if (currentText) drawBrat(currentText);
     });
 
@@ -49,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return params.get('text') ? decodeURIComponent(params.get('text')) : null;
     }
 
-    // ── Draw function ──
+    // ── Draw function (supports multi-line) ──
     function drawBrat(text) {
         const useBlur   = blurToggle.checked;
         const bg        = currentBg;
@@ -59,47 +58,65 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillStyle = bg;
         ctx.fillRect(0, 0, SIZE, SIZE);
 
-        const processed = text.toLowerCase();
-        const words     = processed.split(' ');
-        let fontSize    = 100;
-        let lines       = [];
+        // Split by newline first, then word-wrap each paragraph
+        const rawLines = text.toLowerCase().split('\n').filter(l => l.trim() !== '');
+        
+        let fontSize = 90;
+        let allLines = [];
 
-        // Auto-fit font size
-        for (fontSize = 100; fontSize >= 18; fontSize -= 4) {
+        // Auto-fit: shrink font until all lines fit
+        for (fontSize = 90; fontSize >= 14; fontSize -= 3) {
             ctx.font = `900 ${fontSize}px Arial, sans-serif`;
-            lines = wrapText(words, SIZE * 0.88, ctx);
-            const totalH = lines.length * (fontSize * 1.2);
-            if (totalH <= SIZE * 0.85) break;
+            allLines = [];
+            for (const paragraph of rawLines) {
+                const wrapped = wrapText(paragraph.trim().split(' '), SIZE * 0.88, ctx);
+                allLines.push(...wrapped);
+            }
+            const totalH = allLines.length * (fontSize * 1.25);
+            if (totalH <= SIZE * 0.90) break;
         }
 
         ctx.font         = `900 ${fontSize}px Arial, sans-serif`;
         ctx.textAlign    = 'center';
         ctx.textBaseline = 'middle';
 
-        const lineHeight = fontSize * 1.2;
-        const totalH     = lines.length * lineHeight;
-        const startY     = SIZE / 2 - totalH / 2 + lineHeight / 2;
+        const lineHeight = fontSize * 1.25;
+        const totalH     = allLines.length * lineHeight;
+        const startY     = (SIZE - totalH) / 2 + lineHeight / 2;
 
-        ctx.filter   = useBlur ? `blur(${Math.max(1.5, fontSize * 0.025)}px)` : 'none';
+        // Blur effect
+        ctx.filter    = useBlur ? `blur(${Math.max(1, fontSize * 0.022)}px)` : 'none';
         ctx.fillStyle = fontColor;
-        lines.forEach((line, i) => ctx.fillText(line, SIZE / 2, startY + i * lineHeight));
+
+        allLines.forEach((line, i) => {
+            ctx.fillText(line, SIZE / 2, startY + i * lineHeight);
+        });
+
         ctx.filter = 'none';
 
-        // Show placeholder hidden
+        // Hide placeholder
         placeholder.classList.add('hidden');
     }
 
+    // ── Word wrap helper ──
     function wrapText(words, maxW, ctx) {
+        if (!words.length || (words.length === 1 && words[0] === '')) return [''];
         const lines = [];
         let cur = words[0];
         for (let i = 1; i < words.length; i++) {
             const test = cur + ' ' + words[i];
-            ctx.measureText(test).width <= maxW ? (cur = test) : (lines.push(cur), cur = words[i]);
+            if (ctx.measureText(test).width <= maxW) {
+                cur = test;
+            } else {
+                lines.push(cur);
+                cur = words[i];
+            }
         }
         lines.push(cur);
         return lines;
     }
 
+    // ── Contrast color ──
     function getContrastColor(hex) {
         const r = parseInt(hex.slice(1,3),16);
         const g = parseInt(hex.slice(3,5),16);
@@ -107,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return (0.299*r + 0.587*g + 0.114*b)/255 > 0.5 ? '#000000' : '#ffffff';
     }
 
+    // ── Toast ──
     function showToast(msg) {
         toast.textContent = msg;
         toast.classList.add('show');
@@ -118,16 +136,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const text = inputText.value.trim();
         if (!text) {
             inputText.focus();
-            inputText.style.outline = '3px solid red';
-            setTimeout(() => inputText.style.outline = '', 800);
+            inputText.style.borderLeftColor = 'red';
+            setTimeout(() => inputText.style.borderLeftColor = 'var(--brat-green)', 800);
             return;
         }
         currentText = text;
         drawBrat(text);
     });
 
-    // ── Enter key ──
-    inputText.addEventListener('keydown', e => { if (e.key === 'Enter') generateBtn.click(); });
+    // ── Ctrl+Enter untuk generate (Enter biasa = newline) ──
+    inputText.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && e.ctrlKey) generateBtn.click();
+    });
 
     // ── Download ──
     downloadBtn.addEventListener('click', () => {
@@ -150,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(() => prompt('Salin link ini:', url));
     });
 
-    // ── Auto-load from URL ──
+    // ── Auto-load dari URL ──
     const urlText = getTextFromUrl();
     if (urlText) {
         inputText.value = urlText;
