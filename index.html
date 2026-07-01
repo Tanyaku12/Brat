@@ -4,78 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>brat generator — by blinx</title>
-    <meta name="description" content="Buat gambar bergaya brat album Charli XCX dengan teks kamu sendiri. Gratis dan mudah!">
+    <meta name="description" content="Buat gambar bergaya brat album Charli XCX dengan teks kamu sendiri.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="page-wrapper">
-        <header class="header">
-            <div class="header-badge">brat generator</div>
-        </header>
 
-        <main class="container">
-            <h1 class="title">brat<span class="title-dot">.</span></h1>
-            <p class="subtitle">tulis pesanmu, jadikan brat.</p>
-
-            <div class="card">
-                <div class="input-group">
-                    <label for="inputText">pesan kamu</label>
-                    <input type="text" id="inputText" placeholder="ketik sesuatu..." autocomplete="off" spellcheck="false">
-                </div>
-
-                <div class="options-row">
-                    <div class="option-group">
-                        <label for="bgColor">background</label>
-                        <div class="color-presets">
-                            <button class="color-btn active" data-color="#8ACE00" style="background:#8ACE00" title="brat green" id="color-green"></button>
-                            <button class="color-btn" data-color="#ffffff" style="background:#ffffff" title="white" id="color-white"></button>
-                            <button class="color-btn" data-color="#ff90e8" style="background:#ff90e8" title="pink" id="color-pink"></button>
-                            <button class="color-btn" data-color="#000000" style="background:#000000" title="black" id="color-black"></button>
-                            <button class="color-btn custom-color-btn" id="color-custom" title="custom">
-                                <input type="color" id="bgColor" value="#8ACE00">
-                                🎨
-                            </button>
-                        </div>
-                    </div>
-                    <div class="option-group">
-                        <label for="blurToggle">blur effect</label>
-                        <label class="toggle">
-                            <input type="checkbox" id="blurToggle" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-
-                <button id="generateBtn">
-                    <span class="btn-icon">✦</span>
-                    generate
-                </button>
+        <!-- LEFT PANEL -->
+        <aside class="panel-left">
+            <div class="brand">
+                <h1 class="title">brat<span class="dot">.</span></h1>
+                <span class="badge">generator</span>
             </div>
 
-            <div class="output-section" id="outputSection">
+            <div class="input-group">
+                <label for="inputText">pesan kamu</label>
+                <input type="text" id="inputText" placeholder="ketik sesuatu..." autocomplete="off" spellcheck="false">
+            </div>
+
+            <div class="option-group">
+                <label>background</label>
+                <div class="color-presets">
+                    <button class="color-btn active" data-color="#8ACE00" style="background:#8ACE00" title="brat green"></button>
+                    <button class="color-btn" data-color="#ffffff" style="background:#ffffff" title="white"></button>
+                    <button class="color-btn" data-color="#ff90e8" style="background:#ff90e8" title="pink"></button>
+                    <button class="color-btn" data-color="#000000" style="background:#000000" title="black"></button>
+                    <button class="color-btn" data-color="#ff4444" style="background:#ff4444" title="red"></button>
+                    <button class="color-btn custom-color-btn" title="custom">
+                        <input type="color" id="bgColor" value="#8ACE00">
+                        🎨
+                    </button>
+                </div>
+            </div>
+
+            <div class="option-group">
+                <label for="blurToggle">blur effect</label>
+                <label class="toggle">
+                    <input type="checkbox" id="blurToggle" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <button id="generateBtn">
+                <span class="btn-icon">✦</span> generate
+            </button>
+
+            <p class="note">tip: <code>?text=pesan</code> di URL</p>
+
+            <footer class="footer">© blinx 2025</footer>
+        </aside>
+
+        <!-- RIGHT PANEL -->
+        <main class="panel-right">
+            <div class="canvas-wrapper" id="canvasWrapper">
+                <div class="canvas-placeholder" id="canvasPlaceholder">
+                    <span>✦</span>
+                    <p>hasil muncul di sini</p>
+                </div>
                 <canvas id="bratCanvas"></canvas>
-                <div class="action-btns">
-                    <button id="downloadBtn" class="btn-secondary">
-                        <span>↓</span> download png
-                    </button>
-                    <button id="copyLinkBtn" class="btn-secondary">
-                        <span>⛓</span> copy link
-                    </button>
-                </div>
             </div>
 
-            <p class="note">akses cepat: <code>?text=pesan+kamu</code> di URL</p>
+            <div class="action-btns" id="actionBtns">
+                <button id="downloadBtn" class="btn-secondary">↓ download</button>
+                <button id="copyLinkBtn" class="btn-secondary">⛓ copy link</button>
+            </div>
         </main>
-
-        <footer class="footer">
-            © blinx since 2025
-        </footer>
     </div>
 
-    <div class="toast" id="toast">link tersalin! ✓</div>
-
+    <div class="toast" id="toast"></div>
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,14 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const inputText    = document.getElementById('inputText');
-    const generateBtn  = document.getElementById('generateBtn');
-    const downloadBtn  = document.getElementById('downloadBtn');
-    const copyLinkBtn  = document.getElementById('copyLinkBtn');
-    const canvas       = document.getElementById('bratCanvas');
-    const outputSection = document.getElementById('outputSection');
-    const blurToggle   = document.getElementById('blurToggle');
-    const bgColorInput = document.getElementById('bgColor');
-    const toast        = document.getElementById('toast');
-    const ctx          = canvas.getContext('2d');
+    const inputText      = document.getElementById('inputText');
+    const generateBtn    = document.getElementById('generateBtn');
+    const downloadBtn    = document.getElementById('downloadBtn');
+    const copyLinkBtn    = document.getElementById('copyLinkBtn');
+    const canvas         = document.getElementById('bratCanvas');
+    const placeholder    = document.getElementById('canvasPlaceholder');
+    const blurToggle     = document.getElementById('blurToggle');
+    const bgColorInput   = document.getElementById('bgColor');
+    const toast          = document.getElementById('toast');
+    const ctx            = canvas.getContext('2d');
 
     const SIZE = 500;
     canvas.width  = SIZE;
@@ -34,11 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
     bgColorInput.addEventListener('input', (e) => {
         currentBg = e.target.value;
         colorBtns.forEach(b => b.classList.remove('active'));
-        document.getElementById('color-custom').classList.add('active');
+        document.getElementById('bgColor').closest('.color-btn').classList.add('active');
         if (currentText) drawBrat(currentText);
     });
 
-    // ── Blur toggle ──
+    // ── Blur toggle real-time ──
     blurToggle.addEventListener('change', () => {
         if (currentText) drawBrat(currentText);
     });
@@ -51,114 +51,89 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ── Draw function ──
     function drawBrat(text) {
-        const useBlur = blurToggle.checked;
-        const bg = currentBg;
-
-        // Determine font color (contrast)
+        const useBlur   = blurToggle.checked;
+        const bg        = currentBg;
         const fontColor = getContrastColor(bg);
 
         ctx.clearRect(0, 0, SIZE, SIZE);
-
-        // Background
         ctx.fillStyle = bg;
         ctx.fillRect(0, 0, SIZE, SIZE);
 
-        // Text setup
-        const processedText = text.toLowerCase();
-        const words = processedText.split(' ');
-        let fontSize = 100;
-        let lines = [];
+        const processed = text.toLowerCase();
+        const words     = processed.split(' ');
+        let fontSize    = 100;
+        let lines       = [];
 
         // Auto-fit font size
-        for (fontSize = 100; fontSize >= 20; fontSize -= 4) {
+        for (fontSize = 100; fontSize >= 18; fontSize -= 4) {
             ctx.font = `900 ${fontSize}px Arial, sans-serif`;
             lines = wrapText(words, SIZE * 0.88, ctx);
-            const totalHeight = lines.length * (fontSize * 1.15);
-            if (totalHeight <= SIZE * 0.85) break;
+            const totalH = lines.length * (fontSize * 1.2);
+            if (totalH <= SIZE * 0.85) break;
         }
 
-        ctx.font = `900 ${fontSize}px Arial, sans-serif`;
-        ctx.textAlign  = 'center';
+        ctx.font         = `900 ${fontSize}px Arial, sans-serif`;
+        ctx.textAlign    = 'center';
         ctx.textBaseline = 'middle';
 
         const lineHeight = fontSize * 1.2;
-        const totalH    = lines.length * lineHeight;
-        let startY      = SIZE / 2 - totalH / 2 + lineHeight / 2;
+        const totalH     = lines.length * lineHeight;
+        const startY     = SIZE / 2 - totalH / 2 + lineHeight / 2;
 
-        // Apply blur effect (like brat album cover)
-        if (useBlur) {
-            ctx.filter = `blur(${Math.max(1.5, fontSize * 0.025)}px)`;
-        } else {
-            ctx.filter = 'none';
-        }
-
+        ctx.filter   = useBlur ? `blur(${Math.max(1.5, fontSize * 0.025)}px)` : 'none';
         ctx.fillStyle = fontColor;
-        lines.forEach((line, i) => {
-            ctx.fillText(line, SIZE / 2, startY + i * lineHeight);
-        });
-
+        lines.forEach((line, i) => ctx.fillText(line, SIZE / 2, startY + i * lineHeight));
         ctx.filter = 'none';
 
-        // Show output
-        outputSection.classList.add('visible');
+        // Show placeholder hidden
+        placeholder.classList.add('hidden');
     }
 
-    // ── Word wrap ──
-    function wrapText(words, maxWidth, ctx) {
+    function wrapText(words, maxW, ctx) {
         const lines = [];
-        let current = words[0];
+        let cur = words[0];
         for (let i = 1; i < words.length; i++) {
-            const test = current + ' ' + words[i];
-            if (ctx.measureText(test).width <= maxWidth) {
-                current = test;
-            } else {
-                lines.push(current);
-                current = words[i];
-            }
+            const test = cur + ' ' + words[i];
+            ctx.measureText(test).width <= maxW ? (cur = test) : (lines.push(cur), cur = words[i]);
         }
-        lines.push(current);
+        lines.push(cur);
         return lines;
     }
 
-    // ── Contrast color ──
     function getContrastColor(hex) {
-        const r = parseInt(hex.slice(1, 3), 16);
-        const g = parseInt(hex.slice(3, 5), 16);
-        const b = parseInt(hex.slice(5, 7), 16);
-        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-        return luminance > 0.5 ? '#000000' : '#ffffff';
+        const r = parseInt(hex.slice(1,3),16);
+        const g = parseInt(hex.slice(3,5),16);
+        const b = parseInt(hex.slice(5,7),16);
+        return (0.299*r + 0.587*g + 0.114*b)/255 > 0.5 ? '#000000' : '#ffffff';
     }
 
-    // ── Toast notification ──
     function showToast(msg) {
         toast.textContent = msg;
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 2500);
     }
 
-    // ── Generate button ──
+    // ── Generate ──
     generateBtn.addEventListener('click', () => {
         const text = inputText.value.trim();
         if (!text) {
             inputText.focus();
-            inputText.style.borderColor = 'red';
-            setTimeout(() => inputText.style.borderColor = '', 800);
+            inputText.style.outline = '3px solid red';
+            setTimeout(() => inputText.style.outline = '', 800);
             return;
         }
         currentText = text;
         drawBrat(text);
     });
 
-    // ── Enter key support ──
-    inputText.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') generateBtn.click();
-    });
+    // ── Enter key ──
+    inputText.addEventListener('keydown', e => { if (e.key === 'Enter') generateBtn.click(); });
 
     // ── Download ──
     downloadBtn.addEventListener('click', () => {
-        const url  = canvas.toDataURL('image/png');
+        if (!currentText) return;
         const link = document.createElement('a');
-        link.href     = url;
+        link.href     = canvas.toDataURL('image/png');
         link.download = 'brat-by-blinx.png';
         document.body.appendChild(link);
         link.click();
@@ -169,12 +144,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // ── Copy link ──
     copyLinkBtn.addEventListener('click', () => {
         if (!currentText) return;
-        const shareUrl = `${window.location.origin}${window.location.pathname}?text=${encodeURIComponent(currentText)}`;
-        navigator.clipboard.writeText(shareUrl).then(() => {
-            showToast('link tersalin! ✓');
-        }).catch(() => {
-            prompt('Salin link ini:', shareUrl);
-        });
+        const url = `${location.origin}${location.pathname}?text=${encodeURIComponent(currentText)}`;
+        navigator.clipboard.writeText(url)
+            .then(() => showToast('link tersalin! ✓'))
+            .catch(() => prompt('Salin link ini:', url));
     });
 
     // ── Auto-load from URL ──
