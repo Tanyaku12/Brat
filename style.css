@@ -239,14 +239,15 @@ hr.divider {
 .note {
     font-size: 0.7rem;
     font-weight: 600;
-    color: var(--gray-400);
+    color: #555555;
 }
 .note code {
-    color: var(--yellow-dark);
+    color: #b38a00;
     background: var(--yellow-mid);
     padding: 1px 6px;
     border-radius: 4px;
     font-family: monospace;
+    font-weight: 700;
 }
 
 .footer {
